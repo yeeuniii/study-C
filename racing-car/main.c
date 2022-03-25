@@ -18,20 +18,22 @@ void go(int value, Car *car)
 
 void main()
 {	
+	char names;
 	int num;
 	int times;
 	int i = 0;
 	int j = 0;
 	int randomvalue;
 
-	printf("How many cars? \n");
+//	printf("Enter cars name. \n (But, cars name is seperated by semicolon(,)) \n");
+//	scanf("%s", &names);
+	printf("Enter number.");
 	scanf("%d", &num);
 	printf("How many times are you going to move the cars? \n");
 	scanf("%d", &times);
 
 	Car *cars = malloc(sizeof(Car) * num);
-	char *hyphens = malloc(sizeof(char) * (times + 1));
-	
+	char *hyphens = malloc(sizeof(char) * times);
 	while (i <= num)
 	{	
 		cars[i].number = i + 1;
@@ -47,7 +49,10 @@ void main()
 		go(randomvalue, &cars[j]);
 		printf("## %d ##", randomvalue);
 		printf("%d \n", cars[j].success);
-		
+		memset(hyphens, 0, times);
+		memset(hyphens, '-', cars[j].success);
+		printf("%s \n", hyphens);
+
 		j ++;
 		if (j == num)
 		{
@@ -58,4 +63,5 @@ void main()
 	}
 
 	free(cars);
+	free(hyphens);
 }

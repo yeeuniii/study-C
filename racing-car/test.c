@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 void main()
-{
-	int i = 0;
-
-	srand(time(NULL));
-	while (i < 3)
-	{
-		printf("random number : %d \n", rand() % 10 + 1);
-		i ++;
-	}
+{	
+	int num = 10;
+	char *dash = malloc(sizeof(char) * num);
+	
+	memset(dash, '-', sizeof(char) * num);
+	printf("%s", dash);
 }
