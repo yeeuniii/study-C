@@ -3,9 +3,15 @@
 #include <string.h>
 void main()
 {	
-	int num = 10;
-	char *dash = malloc(sizeof(char) * num);
+	char *ptr;
+	char names[20] = "y, l, e, t";
 	
-	memset(dash, '-', sizeof(char) * num);
-	printf("%s", dash);
+	ptr = strtok(names, ",");
+	while (ptr != NULL)
+	{
+		printf("%s", ptr);
+		ptr = strtok(NULL, ",");
+	}
+		
+	
 }

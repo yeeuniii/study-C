@@ -4,6 +4,7 @@
 #include <string.h>
 typedef struct
 {
+	char name[5];
 	int number;
 	int success;
 } Car;
@@ -16,49 +17,73 @@ void go(int value, Car *car)
 	}
 }
 
+int findMax(char *str)
+{
+	int len;
+	int maxlen = 0;
+	len = strlen(str)
+	if (len > maxlen)
+	{
+		maxlen = len
+	}	
+	return maxlen
+}
+
 void main()
 {	
-	char names;
+	char names[20];
+	char *search;
+	char *cutting;
 	int num;
 	int times;
-	int i = 0;
-	int j = 0;
+	int index = 0;
+	int carindex = 0;
 	int randomvalue;
 
-//	printf("Enter cars name. \n (But, cars name is seperated by semicolon(,)) \n");
-//	scanf("%s", &names);
-	printf("Enter number.");
-	scanf("%d", &num);
+	printf("Enter cars name. \n (But, cars name is seperated by semicolon(,).) \n");
+	scanf("%s", names);
 	printf("How many times are you going to move the cars? \n");
 	scanf("%d", &times);
+	
+	search = strchr(names, ',');
+	while (search != NULL)
+	{	
+		search = strchr(search + 1, ',');
+		index ++;
+	}
+	
+	num = index + 1;
+	index = 0;
 
 	Car *cars = malloc(sizeof(Car) * num);
 	char *hyphens = malloc(sizeof(char) * times);
-	while (i <= num)
+
+	cutting = strtok(names, ",");
+	while (cutting != NULL)
 	{	
-		cars[i].number = i + 1;
-		i ++;
+		strcpy(cars[index].name, cutting);	
+		cars[index].number = index + 1;
+		cutting = strtok(NULL, ",");
+		index ++;
 	}
 	
-	i = 0;
+	index = 0;
 	srand(time(NULL));
-	while (i < times)
+	while (index < times)
 	{			
-		printf("%s%d ", "Car number : ", cars[j].number);
+		printf("%s : ", cars[carindex].name);
 		randomvalue = rand() % 10 + 1;
-		go(randomvalue, &cars[j]);
-		printf("## %d ##", randomvalue);
-		printf("%d \n", cars[j].success);
+		go(randomvalue, &cars[carindex]);
 		memset(hyphens, 0, times);
-		memset(hyphens, '-', cars[j].success);
+		memset(hyphens, '-', cars[carindex].success);
 		printf("%s \n", hyphens);
 
-		j ++;
-		if (j == num)
+		carindex ++;
+		if (carindex == num)
 		{
 			printf("\n");
-			j = 0;
-			i ++;
+			carindex = 0;
+			index ++;
 		}		
 	}
 
