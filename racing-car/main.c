@@ -9,13 +9,42 @@ typedef struct
 	int success;
 } Car;
 
-void find(char *search, char string[50], int *index)
+void input(char names[], int *times)
 {
-	search = strchr(string, ',');
+	printf("Enter cars name. \n (But, cars name is seperated by semicolon(,).) \n");
+	scanf("%s", names);
+	printf("How many times are you going to move the cars? \n");
+	scanf("%d", times);
+}
+
+int find(char string[50], char target)
+{
+	char *search;
+	int index = 0;
+	int number;
+	
+	search = strchr(string, target);
 	while (search != NULL)
 	{	
-		search = strchr(search + 1, ',');
-		*index = *index + 1;
+		search = strchr(search + 1, target);
+		index ++;
+	}
+
+	return index + 1; 
+}
+
+void split(char names[], Car *cars)
+{
+	int index = 0;
+	char *cutting;
+	
+	cutting = strtok(names, ",");
+	while (cutting != NULL)
+	{	
+		strcpy(cars[index].name, cutting);	
+		cars[index].number = index + 1;
+		cutting = strtok(NULL, ",");
+		index ++;
 	}
 }
 
@@ -27,42 +56,12 @@ void go(int value, Car *car)
 	}
 }
 
-void main()
-{	
-	char names[50];
-	char *winners = malloc(sizeof(char) * 50);
-	char *search;
-	char *cutting;
-	int num;
-	int times;
+void runRacing(int times, Car cars[], char hyphens[], int num)
+{
 	int index = 0;
 	int carindex = 0;
 	int randomvalue;
 	Car *car;
-
-	printf("Enter cars name. \n (But, cars name is seperated by semicolon(,).) \n");
-	scanf("%s", names);
-	printf("How many times are you going to move the cars? \n");
-	scanf("%d", &times);
-	
-	find(search, names, &index);
-	num = index + 1;
-	index = 0;
-
-	Car *cars = malloc(sizeof(Car) * num);
-	char *hyphens = malloc(sizeof(char) * times);
-
-	cutting = strtok(names, ",");
-	while (cutting != NULL)
-	{	
-		strcpy(cars[index].name, cutting);	
-		cars[index].number = index + 1;
-		cutting = strtok(NULL, ",");
-		index ++;
-	}
-	
-	index = 0;
-	srand(time(NULL));
 	while (index < times)
 	{			
 		car = &cars[carindex];
@@ -81,9 +80,14 @@ void main()
 			index ++;
 		}		
 	}
-	
+}
+
+void determineWinners(int num, Car *cars, char winners[])
+{
 	int maxValue = 0;
-	carindex = 0;
+	int carindex = 0;
+	Car *car;
+
 	while (carindex < num)
 	{
 		car = &cars[carindex];
@@ -101,11 +105,13 @@ void main()
 		carindex ++;
 	}
 
-	index = 0;
-	find(search, winners, &index);
+}
 
+
+void printWinners(int num, char winners[50])
+{
 	printf("\n\n Congratulations! ");	
-	if (index == 0)
+	if (num == 1)
 	{
 		printf("Winner is %s\n", winners);
 	}
@@ -113,6 +119,29 @@ void main()
 	{
 		printf("Winners are %s\n", winners);
 	}
+}
+
+void main()
+{	
+	char names[50];
+	char *winners = malloc(sizeof(char) * 50);
+	int num;
+	int times;
+
+	input(names, &times);
+	num = find(names, ',');
+
+	Car *cars = malloc(sizeof(Car) * num);
+	char *hyphens = malloc(sizeof(char) * times);
+	
+	split(names, cars);
+
+	srand(time(NULL));
+	runRacing(times, cars, hyphens, num);
+	determineWinners(num, cars, winners);
+
+	num = find(winners, ',');
+	printWinners(num, winners);
 
 	free(cars);
 	free(hyphens);
