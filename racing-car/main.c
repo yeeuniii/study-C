@@ -56,12 +56,14 @@ void go(int value, Car *car)
 	}
 }
 
-void runRacing(int times, Car cars[], char hyphens[], int num)
+void runRacing(int times, Car cars[], int num)
 {
 	int index = 0;
 	int carindex = 0;
 	int randomvalue;
+	char *hyphens = malloc(sizeof(char) * times);
 	Car *car;
+
 	while (index < times)
 	{			
 		car = &cars[carindex];
@@ -80,6 +82,8 @@ void runRacing(int times, Car cars[], char hyphens[], int num)
 			index ++;
 		}		
 	}
+
+	free(hyphens);
 }
 
 void determineWinners(int num, Car *cars, char winners[])
@@ -132,18 +136,16 @@ void main()
 	num = find(names, ',');
 
 	Car *cars = malloc(sizeof(Car) * num);
-	char *hyphens = malloc(sizeof(char) * times);
 	
 	split(names, cars);
 
 	srand(time(NULL));
-	runRacing(times, cars, hyphens, num);
+	runRacing(times, cars, num);
 	determineWinners(num, cars, winners);
 
 	num = find(winners, ',');
 	printWinners(num, winners);
 
 	free(cars);
-	free(hyphens);
 	free(winners);
 }
