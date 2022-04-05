@@ -17,7 +17,7 @@ void input(char names[], int *times)
 	scanf("%d", times);
 }
 
-int find(char string[50], char target)
+int countChar(char string[], char target)
 {
 	char *search;
 	int index = 0;
@@ -66,7 +66,7 @@ void runRacing(int times, Car cars[], int num)
 
 	while (index < times)
 	{			
-		car = &cars[carindex];
+		car = cars + carindex;
 		printf("\n%s : ", car -> name);
 		randomvalue = rand() % 10 + 1;
 		go(randomvalue, car);
@@ -86,25 +86,25 @@ void runRacing(int times, Car cars[], int num)
 	free(hyphens);
 }
 
-void determineWinners(int num, Car *cars, char winners[])
+void determineWinners(int num, Car cars[], char winners[])
 {
 	int maxValue = 0;
 	int carindex = 0;
-	Car *car;
+	Car car;
 
 	while (carindex < num)
 	{
-		car = &cars[carindex];
-		if (car -> success == maxValue)
+		car = *(cars + carindex);
+		if (car.success == maxValue)
 		{
 			strcat(winners, ", ");
-			strcat(winners, car -> name);
+			strcat(winners, car.name);
 		}
-		if (car -> success > maxValue)
+		if (car.success > maxValue)
 		{
-			maxValue = car -> success;
+			maxValue = car.success;
 			memset(winners, 0, 50);
-			strcat(winners, car -> name);	
+			strcat(winners, car.name);	
 		}
 		carindex ++;
 	}
@@ -133,7 +133,7 @@ void main()
 	int times;
 
 	input(names, &times);
-	num = find(names, ',');
+	num = countChar(names, ',');
 
 	Car *cars = malloc(sizeof(Car) * num);
 	
@@ -143,7 +143,7 @@ void main()
 	runRacing(times, cars, num);
 	determineWinners(num, cars, winners);
 
-	num = find(winners, ',');
+	num = countChar(winners, ',');
 	printWinners(num, winners);
 
 	free(cars);
