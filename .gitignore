@@ -1,4 +1,4 @@
 *
 !.gitignore
-!*/
+!racing-car/
 !*.c
